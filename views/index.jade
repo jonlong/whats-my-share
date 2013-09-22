@@ -1,0 +1,29 @@
+!!! 5
+html
+	head
+		title HS Unit Valuation
+		link(rel="stylesheet", href="/css/screen.css")
+		link(rel="stylesheet", href="/components/bootstrap/dist/css/bootstrap.min.css")
+		link(rel="stylesheet", href="/components/bootstrap/examples/carousel/carousel.css")
+	body
+		div.container
+			div.featurette
+				div.col-md-8
+					h1.featurette-heading What's My Share of 
+						span.text-muted Harbour Square?
+					p.lead Lorem ipsum dolor sit amet, consectetur adipiscing elit. In gravida ipsum non mauris mattis malesuada. Sed suscipit, lorem a ullamcorper dapibus, neque arcu ullamcorper mauris, eu hendrerit erat nulla eget felis.
+				div.col-md-4.well
+					form(action='/percentage', method='GET', id="percentage-form")
+						div.field
+							label.h3(for="building") Building
+							select.form-control(name="building", id="building")
+								option(value="N") North
+								option(value="S") South
+								option(value="TH") Town House
+						div.field
+							label.h3(for="number") Unit Number
+							input.form-control(type="number", name="number", id="number")
+						button.btn.btn-lg.btn-primary.btn-block(type="submit") See Your Share
+		script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+		script(src="/components/bootstrap/dist/js/bootstrap.min.js")
+		script(src="/js/main.js")
