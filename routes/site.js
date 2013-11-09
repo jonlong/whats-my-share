@@ -14,9 +14,9 @@ var routes = function(app, data) {
   // building
   // number
   app.get('/percentage', function(req, res) {
-    var building = req.query['building'];
-    var number = req.query['number'];
-    
+    var building = req.query.building;
+    var number = req.query.number;
+
     res.redirect('/'+building+'/'+number);
   });
 
@@ -24,11 +24,11 @@ var routes = function(app, data) {
   app.get('/:building/:number', function(req, res) {
     var building = req.params.building;
     var number = req.params.number;
-    var result = _.find(data, {'Building': building, 'Unit Number': number});
-    
+    var result = _.find(data, {'gsx$building': building, 'gsx$unitnumber': number});
+
     if (!result) {
       // Not a valid unit/unit does not exist
-      response.send(404);
+      res.send(404);
     } else {
       console.log(result);
       res.render('results', {

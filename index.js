@@ -17,37 +17,37 @@ var config = require('./config');
 
 // Load data
 var data;
-var dataURL = 'https://spreadsheets.google.com/feeds/list/'+config.data.googlekey+'/od6/public/values?alt=json-in-script&callback=x';
-var r = request(dataURL);
+var dataURL = 'https://spreadsheets.google.com/feeds/list/'+config.data.googlekey+'/od6/public/values?alt=json-in-script&callback=parseJSONPData';
+var parseJSONPData = function(data){
+  return data.feed.entry;
+};
 
-r.on('error', function (err) {
-  console.log('Request error: ' + err);
-});
+request(dataURL, function (error, response, body) {
+  if (error) {
+    console.log('Request error: ' + error);
+    return;
+  }
 
-r.on('response', function (res) {
-  if (res.statusCode !== 200) {
-    console.log('Bad Status: '+ res.statusCode);
+  if (response.statusCode !== 200) {
+    console.log('Bad status: ' + response.statusCode);
     return;
   } else {
-    r.pipe(fs.createWriteStream('data.json'));
+    var json = eval(body);
+    data = json;
+    fs.writeFileSync('data.json', JSON.stringify(data));
+
+    // App routes
+    require('./routes/site')(app, data);
   }
 });
 
-r.on('end', function () {
-  data = fs.readFileSync('data.json', 'utf8');
-  console.log('data', data);
-});
-
-// Express config
+/* Express config */
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.cookieParser());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.static(__dirname + '/public'));
-
-// App routes
-require('./routes/site')(app, data);
 
 // Start 'er up
 app.listen(config.web.port);
